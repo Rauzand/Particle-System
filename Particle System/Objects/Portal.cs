@@ -27,5 +27,17 @@ namespace Particle_System.Objects
                 input.X, input.Y,
                 output.X, output.Y);
         }
+
+        //пересечение частиц с входом портала
+        public void Overlap(Particle particle)
+        {
+            float gX = input.X - particle.X;
+            float gY = input.Y - particle.Y;
+
+            bool overlap = Math.Sqrt(gX * gX + gY * gY) <= radius;
+
+            if (overlap)
+                OnPortalParticle?.Invoke(particle);
+        }
     }
 }
