@@ -106,6 +106,30 @@ namespace Particle_System
             emitter.SpeedMax = tbSpeed.Value;
             lblSpeedValue.Text = tbSpeed.Value.ToString();
         }
+        private void TbLife_Scroll(object sender, EventArgs e)
+        {
+            //минимальная продолжительность жизни = 25% от максимума
+            emitter.LifeMin = tbLife.Value / 4;
+            emitter.LifeMax = tbLife.Value;
+            lblLifeValue.Text = tbLife.Value.ToString();
+        }
 
+        private void TbRadiusPortal_Scroll(object sender, EventArgs e)
+        {
+            if (portal != null)
+            {
+                portal.radius = (byte)tbRadiusPortal.Value;
+                lblRadiusPortalValue.Text = tbRadiusPortal.Value.ToString();
+            }
+        }
+
+        private void TbDirectionPortal_Scroll(object sender, EventArgs e)
+        {
+            if (portal != null)
+            {
+                portal.direction = (ushort)tbDirectionPortal.Value;
+                lblDirectionPortalValue.Text = tbDirectionPortal.Value.ToString();
+            }
+        }
     }
 }
