@@ -47,6 +47,65 @@ namespace Particle_System
             }
             picDisplay.Invalidate();
         }
+        private void PicDisplay_MouseClick(object sender, MouseEventArgs e)
+        {
+            //если портал не создан
+            if (portal == null)
+            {
+                portal = new Portal
+                {
+                    input = new(e.X, e.Y),
+                    output = new(e.X, e.Y),
+                    direction = (ushort)emitter.Direction
+                };
+
+                //реакция на пересечение частицы с входом портала
+                portal.OnPortalParticle += (particle) =>
+                {
+                    particle.X = portal.output.X;
+                    particle.Y = portal.output.Y;
+
+                    //перерасчёт направления с учётом направления портала
+                    particle.SpeedX = MathF.Cos((float)portal.direction / 180 * MathF.PI)
+                        * particle.SpeedX;
+                    particle.SpeedY = -MathF.Sin((float)portal.direction / 180 * MathF.PI)
+                        * particle.SpeedY;
+                };
+            }
+            else
+            {
+                if (e.Button == MouseButtons.Left)
+                {
+                    portal.input.X = e.X;
+                    portal.input.Y = e.Y;
+                }
+                else if (e.Button == MouseButtons.Right)
+                {
+                    portal.output.X = e.X;
+                    portal.output.Y = e.Y;
+                }
+            }
+        }
+
+        private void TbDirection_Scroll(object sender, EventArgs e)
+        {
+            emitter.Direction = tbDirection.Value;
+            lblDirectionValue.Text = tbDirection.Value.ToString();
+        }
+
+        private void TbSpreading_Scroll(object sender, EventArgs e)
+        {
+            emitter.Spreading = tbSpreading.Value;
+            lblSpreadingValue.Text = tbSpreading.Value.ToString();
+        }
+
+        private void TbSpeed_Scroll(object sender, EventArgs e)
+        {
+            //минимальная скорость = 20% от максимальной
+            emitter.SpeedMin = (int)(tbSpeed.Value * 0.2f);
+            emitter.SpeedMax = tbSpeed.Value;
+            lblSpeedValue.Text = tbSpeed.Value.ToString();
+        }
 
     }
 }
