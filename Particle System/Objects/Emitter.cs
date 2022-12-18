@@ -27,7 +27,37 @@ namespace Particle_System.Objects
         public float GravitationX = 0;
         public float GravitationY = 1; // пусть гравитация будет силой один пиксель за такт, нам хватит
 
+        public void UpdateState()
+        {
+            int particlesToCreate = ParticlesPerTick; // фиксируем счетчик сколько частиц нам создавать за тик
 
+
+            foreach (var particle in particles)
+            {
+                particle.Life -= 1;
+                if (particle.Life < 0)
+                {
+                    particlesToCreate -= 1;
+                    ResetParticle(particle);
+                }
+                else
+                {
+                    // гравитация воздействует на вектор скорости, поэтому пересчитываем его
+                    particle.SpeedX += GravitationX;
+                    particle.SpeedY += GravitationY;
+                    particle.X += particle.SpeedX;
+                    particle.Y += particle.SpeedY;
+                }
+            }
+
+            while (particlesToCreate >= 1)
+            {
+                particlesToCreate -= 1;
+                var particle = CreateParticle();
+                ResetParticle(particle);
+                particles.Add(particle);
+            }
+        }
         public virtual Particle CreateParticle()
         {
             var particle = new ParticleColorful
