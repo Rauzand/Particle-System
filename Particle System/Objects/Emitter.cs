@@ -28,6 +28,17 @@ namespace Particle_System.Objects
         public float GravitationY = 1; // пусть гравитация будет силой один пиксель за такт, нам хватит
 
 
+        public virtual Particle CreateParticle()
+        {
+            var particle = new ParticleColorful
+            {
+                FromColor = ColorFrom,
+                ToColor = ColorTo
+            };
+
+            return particle;
+        }
+
         public virtual void ResetParticle(Particle particle)
         {
             particle.Life = Particle.rand.Next(LifeMin, LifeMax);
