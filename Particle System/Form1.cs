@@ -45,7 +45,6 @@ namespace Particle_System
                         portal.Overlap(particle);
                 }
             }
-
             picDisplay.Invalidate();
         }
 
